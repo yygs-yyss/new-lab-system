@@ -1,18 +1,26 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div>
+    <ul>
+      <li v-for="(c, index) of courses" :key="index">{{ c.name }}</li>
+    </ul>
+    <div>1111</div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import { computed, defineComponent } from "vue";
+import { useStore } from "vuex";
+import { State } from "@/store";
+import { GET_COURSES } from "@/store/VuexTypes";
 
 export default defineComponent({
-  name: "Home",
-  components: {
-    HelloWorld,
+  setup() {
+    const store = useStore<State>();
+    store.dispatch(GET_COURSES);
+    const courses = computed(() => store.state.courses);
+    return {
+      courses,
+    };
   },
 });
 </script>
