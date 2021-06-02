@@ -149,7 +149,7 @@ import { State } from "@/store";
 import { Store, useStore } from "vuex";
 import { computed, defineComponent, Ref, ref } from "vue";
 import axios from "axios";
-import { ClassroomMessage, Lab, SelectMessage } from "@/datasource/Types";
+import { ClassroomMessage, SelectMessage } from "@/datasource/Types";
 
 export default defineComponent({
   setup() {
@@ -160,7 +160,7 @@ export default defineComponent({
       id: "",
       start: 1,
       end: 1,
-      lesson: ""
+      lesson: "",
     });
     const classroomMessage = ref<ClassroomMessage[]>([
       {
@@ -169,18 +169,18 @@ export default defineComponent({
         end: 9,
         teacherName: "y",
         lesson: "0101",
-        courseName: "数据结构"
-      }
+        courseName: "数据结构",
+      },
     ]);
 
     const query = (number: string) => {
       const url = `http://localhost:8080/api/lab/${number}`;
-      axios.get(url).then(resp => {
+      axios.get(url).then((resp) => {
         classroomMessage.value = resp.data;
       });
     };
     const select = (selectMessage: Ref<SelectMessage>) => {
-      axios.get("http://localhost:8080/api/${Lab}").then(resp => {
+      axios.get("http://localhost:8080/api/${Lab}").then((resp) => {
         classroomMessage.value = resp.data;
       });
     };
@@ -190,9 +190,9 @@ export default defineComponent({
       query,
       classroomMessage,
       selectMessage,
-      select
+      select,
     };
-  }
+  },
 });
 </script>
 <style scoped>

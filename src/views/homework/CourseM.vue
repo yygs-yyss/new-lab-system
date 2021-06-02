@@ -95,7 +95,7 @@ export default defineComponent({
       id: "",
       start: 1,
       end: 1,
-      lesson: ""
+      lesson: "",
     });
     const form = ref<CourseMessage>({
       courseName: "",
@@ -103,12 +103,12 @@ export default defineComponent({
       start: 1,
       end: 1,
       period: 0,
-      studentNumber: 0
+      studentNumber: 0,
     });
     return {
       tableData,
       form,
-      selectMessage
+      selectMessage,
     };
   },
   methods: {
@@ -118,8 +118,8 @@ export default defineComponent({
     selectPlatform(e: { $forceUpdate: () => void }) {
       //  alert(e);
       e.$forceUpdate();
-    }
-  }
+    },
+  },
 });
 </script>
 <style scoped>

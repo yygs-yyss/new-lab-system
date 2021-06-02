@@ -60,7 +60,7 @@ export default defineComponent({
     const form = ref<Lab>({
       id: "",
       number: 0,
-      detail: ""
+      detail: "",
     });
     const submitForm = (form: Ref) => {
       console.log(form);
@@ -68,14 +68,14 @@ export default defineComponent({
     return {
       tableData,
       form,
-      submitForm
+      submitForm,
     };
   },
   methods: {
     change(e: { $forceUpdate: () => void }) {
       e.$forceUpdate();
-    }
-  }
+    },
+  },
 });
 </script>
 <style scoped>

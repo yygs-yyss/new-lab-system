@@ -14,7 +14,7 @@ import h from "@/views/homework/Head.vue";
 import login from "@/views/homework/Login.vue";
 // import pr from "@/views/homework/practice.vue";
 import sidebarAdmin from "@/views/homework/sidebarAdmin.vue";
-import store, { State } from "./store";
+import { State } from "./store";
 import { Store, useStore } from "vuex";
 export default defineComponent({
   components: { sidebar, h, login, sidebarAdmin },

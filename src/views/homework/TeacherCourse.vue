@@ -19,8 +19,7 @@
 <script lang="ts">
 import { State } from "@/store";
 import { Store, useStore } from "vuex";
-import { computed, defineComponent, ref } from "vue";
-import { SelectMessage } from "@/datasource/Types";
+import { computed, defineComponent } from "vue";
 
 export default defineComponent({
   setup() {

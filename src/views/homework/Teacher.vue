@@ -3,6 +3,11 @@
     <h1 class="table">教师信息</h1>
     <el-table class="table" :data="tableData" style="width: 1000px">
       <el-table-column
+        label="教师编号"
+        prop="id"
+        style="width: 150px"
+      ></el-table-column>
+      <el-table-column
         label="教师姓名"
         prop="name"
         style="width: 150px"
@@ -24,13 +29,19 @@
       ></el-table-column>
       <el-table-column label=" " prop=" "></el-table-column>
       <el-table-column align="right">
-        <el-button>查看详细</el-button>
+        <template v-slot="scope">
+          <el-button @click="query(scope.row.id)">查看详细</el-button>
+        </template>
       </el-table-column>
       <el-table-column align="right">
-        <el-button>修改信息</el-button>
+        <template v-slot="scope">
+          <el-button @click="query(scope.row.id)">修改信息</el-button>
+        </template>
       </el-table-column>
       <el-table-column align="right">
-        <el-button>删除信息</el-button>
+        <template v-slot="scope">
+          <el-button @click="query(scope.row.id)">删除信息</el-button>
+        </template>
       </el-table-column>
     </el-table>
     <div style="width: 500px">
@@ -91,10 +102,18 @@ export default defineComponent({
     const change = (e: { $forceUpdate: () => void }) => {
       e.$forceUpdate();
     };
+    const query = (id: string) => {
+      tableData.value?.forEach((t) => {
+        if (t.id == id) {
+          alert(t.detail);
+        }
+      });
+    };
     return {
       tableData,
       form,
       change,
+      query,
     };
   },
 });

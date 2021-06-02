@@ -18,11 +18,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button
-            style="width: 100%"
-            type="primary"
-            @click="submitForm(ruleForm)"
-          >
+          <el-button style="width: 100%" type="primary" @click="submitForm()">
             登录
           </el-button>
           {{ ruleForm.userName }}/{{ ruleForm.password }}
@@ -35,7 +31,7 @@
 import { State } from "@/store";
 import { LOGIN } from "@/store/VuexTypes";
 import { Store, useStore } from "vuex";
-import { computed, defineComponent, Ref, ref, watch } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { UserLogin } from "@/datasource/Types";
 export default defineComponent({
   setup() {
@@ -43,7 +39,7 @@ export default defineComponent({
     const user = ref<UserLogin>({});
     const form = { userName: "", password: "" };
     const ruleForm = ref(form);
-    const submitForm = (form: Ref) => {
+    const submitForm = () => {
       store.dispatch(LOGIN, ruleForm.value).then((data) => (user.value = data));
     };
     watch(user, () => {
