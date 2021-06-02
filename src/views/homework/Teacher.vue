@@ -78,7 +78,7 @@
             ></el-input>
           </el-form-item>
           <el-button id="button" type="primary" @click="submitForm(form)">
-            提交
+            添加教师
           </el-button>
         </el-form>
       </div>
@@ -89,9 +89,9 @@
 <script lang="ts">
 import { State } from "@/store";
 import { Store, useStore } from "vuex";
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, Ref, ref } from "vue";
 import { Teacher } from "@/datasource/Types";
-import { DEL_TEACHER } from "@/store/VuexTypes";
+import { ADD_TEACHER, DEL_TEACHER } from "@/store/VuexTypes";
 
 export default defineComponent({
   setup() {
@@ -123,6 +123,9 @@ export default defineComponent({
     const del = (id: string) => {
       store.dispatch(DEL_TEACHER, id);
     };
+    const submitForm = () => {
+      store.dispatch(ADD_TEACHER, form.value);
+    };
     return {
       tableData,
       form,
@@ -130,6 +133,7 @@ export default defineComponent({
       query,
       dialogVisible,
       detail,
+      submitForm,
     };
   },
 });

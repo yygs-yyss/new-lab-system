@@ -18,3 +18,4 @@ export const UPDATE_COURSES = "UPDATE_COURSES";
 export const DEL_TEACHER = "DEL_TEACHER";
 export const MODIFY_TEACHER = "MODIFY_TEACHER";
 export const ADD_TEACHER = "ADD_TEACHER";
+export const UPDATE_TEACHER = "UPDATE_TEACHER";

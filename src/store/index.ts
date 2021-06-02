@@ -38,6 +38,7 @@ const myMutations: MutationTree<State> = {
   [vxt.UPDATE_COURSES]: (state, data: CourseMessage[]) =>
     (state.courseMessage = data),
   [vxt.LOGIN]: (state, data: any) => (state.user = data),
+  [vxt.UPDATE_TEACHER]: (state, data: any) => (state.teachers = data),
 };
 const myActions: ActionTree<State, State> = {
   [vxt.LOGIN]: async ({ commit }, data: any) => {
@@ -59,7 +60,13 @@ const myActions: ActionTree<State, State> = {
   },
   [vxt.DEL_TEACHER]: async ({ commit }, id: number) => {
     const resp = await axios.delete<ResultVO>(`/api/teacher/del/${id}`);
-    commit(vxt.UPDATE_COURSES, resp.data.data);
+    commit(vxt.UPDATE_TEACHER, resp.data.data);
+  },
+  [vxt.ADD_TEACHER]: async ({ commit }, teacher: Teacher) => {
+    console.log(teacher);
+    const resp = await axios.post<ResultVO>("/api/admin/add", teacher);
+    console.log(resp);
+    commit(vxt.UPDATE_TEACHER, resp.data.data);
   },
 };
 export default createStore({
