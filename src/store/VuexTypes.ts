@@ -15,3 +15,6 @@ export const GET_SHOP = "GET_SHOP";
 // project
 export const GET_COURSES = "GET_COURSES";
 export const UPDATE_COURSES = "UPDATE_COURSES";
+export const DEL_TEACHER = "DEL_TEACHER";
+export const MODIFY_TEACHER = "MODIFY_TEACHER";
+export const ADD_TEACHER = "ADD_TEACHER";

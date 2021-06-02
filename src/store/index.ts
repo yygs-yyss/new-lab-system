@@ -1,11 +1,5 @@
 import { ActionTree, createStore, MutationTree } from "vuex";
-import {
-  Lab,
-  CourseMessage,
-  Teacher,
-  UserLogin,
-  User,
-} from "@/datasource/Types";
+import { Lab, CourseMessage, Teacher, UserLogin } from "@/datasource/Types";
 import * as vxt from "@/store/VuexTypes";
 import axios from "axios";
 import { ResultVO } from "@/mock";
@@ -56,11 +50,15 @@ const myActions: ActionTree<State, State> = {
     commit(vxt.LOGIN, resp.data.data);
     return Promise.resolve(resp.data.data.user);
   },
-  [vxt.GET_COURSES]: async ({ commit }, user: User) => {
-    console.log(user);
-    const resp = await axios.post<ResultVO>("/api/teacher/get", user);
-    console.log(user);
+  [vxt.GET_COURSES]: async ({ commit }, name: string) => {
+    console.log(name);
+    const resp = await axios.get<ResultVO>("/api/teacher/get");
+    console.log(name);
     console.log(resp);
+    commit(vxt.UPDATE_COURSES, resp.data.data);
+  },
+  [vxt.DEL_TEACHER]: async ({ commit }, id: number) => {
+    const resp = await axios.delete<ResultVO>(`/api/teacher/del/${id}`);
     commit(vxt.UPDATE_COURSES, resp.data.data);
   },
 };

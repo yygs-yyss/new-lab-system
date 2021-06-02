@@ -31,6 +31,12 @@
       <el-table-column align="right">
         <template v-slot="scope">
           <el-button @click="query(scope.row.id)">查看详细</el-button>
+          <el-dialog title="教师信息" v-model="dialogVisible" center>
+            <div class="word">
+              {{ scope.row.name }}
+            </div>
+            <div class="word">{{ detail }}</div>
+          </el-dialog>
         </template>
       </el-table-column>
       <el-table-column align="right">
@@ -40,7 +46,7 @@
       </el-table-column>
       <el-table-column align="right">
         <template v-slot="scope">
-          <el-button @click="query(scope.row.id)">删除信息</el-button>
+          <el-button @click="del(scope.row.id)">删除信息</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -85,11 +91,14 @@ import { State } from "@/store";
 import { Store, useStore } from "vuex";
 import { computed, defineComponent, ref } from "vue";
 import { Teacher } from "@/datasource/Types";
+import { DEL_TEACHER } from "@/store/VuexTypes";
 
 export default defineComponent({
   setup() {
     const store: Store<State> = useStore();
     const tableData = computed(() => store.state.teachers);
+    const dialogVisible = ref(false);
+    const detail = ref<string>();
     const form = ref<Teacher>({
       id: "",
       name: "",
@@ -103,17 +112,24 @@ export default defineComponent({
       e.$forceUpdate();
     };
     const query = (id: string) => {
+      dialogVisible.value = true;
       tableData.value?.forEach((t) => {
         if (t.id == id) {
-          alert(t.detail);
+          detail.value = t.detail;
         }
       });
+      //alert(detail.value);
+    };
+    const del = (id: string) => {
+      store.dispatch(DEL_TEACHER, id);
     };
     return {
       tableData,
       form,
       change,
       query,
+      dialogVisible,
+      detail,
     };
   },
 });
@@ -125,5 +141,8 @@ export default defineComponent({
 #button {
   margin: 0 10px;
   width: 100%;
+}
+.word {
+  font-size: 20px;
 }
 </style>
