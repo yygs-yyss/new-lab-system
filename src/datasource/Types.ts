@@ -8,8 +8,11 @@ export interface User {
   id?: number;
   level?: number;
   name?: string;
+  userName?: string;
+  password?: string;
   address?: string;
   insertTime?: string;
+  role?: number;
   sex?: string;
   title?: Title;
   courses?: Course[];
