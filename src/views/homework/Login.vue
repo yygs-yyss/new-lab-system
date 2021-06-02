@@ -31,25 +31,38 @@
     </div>
   </div>
 </template>
-
 <script lang="ts">
-import store from "@/store";
+import { State } from "@/store";
 import { LOGIN } from "@/store/VuexTypes";
-import { defineComponent, Ref, ref } from "vue";
-
+import { Store, useStore } from "vuex";
+import { computed, defineComponent, Ref, ref, watch } from "vue";
+import { UserLogin } from "@/datasource/Types";
 export default defineComponent({
   setup() {
+    const store: Store<State> = useStore();
+    const user = ref<UserLogin>({});
     const form = { userName: "", password: "" };
     const ruleForm = ref(form);
     const submitForm = (form: Ref) => {
-      console.log(form);
-      store.dispatch(LOGIN, ruleForm.value);
+      store.dispatch(LOGIN, ruleForm.value).then((data) => (user.value = data));
     };
+    watch(user, () => {
+      if (user.value.role == 5) {
+        store.state.agree = 2;
+        sessionStorage.setItem("agree", "2");
+      } else {
+        console.log(sessionStorage.getItem("agree"));
+        sessionStorage.setItem("agree", "1");
+        console.log(sessionStorage.getItem("agree"));
+        console.log(1);
+        store.state.agree = 1;
+      }
+    });
     return {
       submitForm,
-      ruleForm
+      ruleForm,
     };
-  }
+  },
 });
 </script>
 <style scoped>
@@ -69,3 +82,5 @@ export default defineComponent({
   border-radius: 3%;
 }
 </style>
+
+function userRouter() { throw new Error("Function not implemented."); }

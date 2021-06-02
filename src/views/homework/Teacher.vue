@@ -8,11 +8,6 @@
         style="width: 150px"
       ></el-table-column>
       <el-table-column
-        label="性别"
-        prop="sex"
-        style="width: 150px"
-      ></el-table-column>
-      <el-table-column
         label="毕业院校"
         prop="graduationSchool"
         style="width: 150px"

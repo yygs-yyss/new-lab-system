@@ -13,6 +13,8 @@ export interface ClassroomMessage {
   title?: string;
 }
 export interface CourseMessage {
+  id?: string;
+  teacherId?: string;
   courseName: string;
   start: number;
   end: number;
@@ -27,8 +29,16 @@ export interface SelectMessage {
   lesson?: string;
 }
 export interface User {
+  role: number;
   userName?: string;
   password?: string;
+}
+export interface UserLogin {
+  id?: string;
+  name?: string;
+  userName?: string;
+  password?: string;
+  role?: number;
 }
 export interface Teacher {
   id?: string;

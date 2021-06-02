@@ -1,21 +1,30 @@
 <template>
-  <login></login>
-  <h></h>
+  <login v-if="agree == 0"></login>
+  <h v-if="agree != 0"></h>
   <div id="id">
-    <sidebar></sidebar>
-    <router-view key="$route.path"></router-view>
+    <sidebarAdmin v-if="agree == 1"></sidebarAdmin>
+    <sidebar v-if="agree == 2"></sidebar>
+    <router-view v-if="agree != 0" key="$route.path"></router-view>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from "vue";
+import { computed, defineComponent } from "vue";
 import sidebar from "@/views/homework/Sidebar.vue";
 import h from "@/views/homework/Head.vue";
 import login from "@/views/homework/Login.vue";
 // import pr from "@/views/homework/practice.vue";
-// import sidebarAdmin from "@/views/homework/sidebarAdmin.vue";
+import sidebarAdmin from "@/views/homework/sidebarAdmin.vue";
+import store, { State } from "./store";
+import { Store, useStore } from "vuex";
 export default defineComponent({
-  components: { sidebar, h },
-  //components: { login }
+  components: { sidebar, h, login, sidebarAdmin },
+  setup() {
+    const store: Store<State> = useStore();
+    const agree = computed(() => store.state.agree);
+    return {
+      agree,
+    };
+  },
 });
 </script>
 
