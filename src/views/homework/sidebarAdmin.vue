@@ -8,13 +8,13 @@
         </h2>
         <ul>
           <li>
-            <router-link to="/homework/LabM" class="i">
+            <router-link to="/homework/LabM" @click="query()" class="i">
               <i class="el-icon-user-solid"></i>
               实验室管理
             </router-link>
           </li>
           <li>
-            <router-link to="/homework/teacher" class="i">
+            <router-link to="/homework/teacher" @click="query()" class="i">
               <i class="el-icon-circle-plus"></i>
               教师管理
             </router-link>
@@ -25,6 +25,26 @@
     <div id="id"></div>
   </div>
 </template>
+<script lang="ts">
+import { State } from "@/store";
+import { Store, useStore } from "vuex";
+import { defineComponent } from "vue";
+import { GET_LAB, GET_TEACHER, UPDATE_LAB } from "@/store/VuexTypes";
+
+export default defineComponent({
+  setup() {
+    const store: Store<State> = useStore();
+    const query = () => {
+      store.dispatch(GET_LAB);
+      store.dispatch(GET_TEACHER);
+    };
+    return {
+      query,
+    }
+  },
+});
+</script>
+
 <style scoped>
 * {
   padding: 0;

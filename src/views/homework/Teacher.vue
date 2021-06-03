@@ -97,6 +97,9 @@ export default defineComponent({
   setup() {
     const store: Store<State> = useStore();
     const tableData = computed(() => store.state.teachers);
+    const s = sessionStorage.getItem("token");
+    const agree = ref(false);
+    const se = ref(s);
     const dialogVisible = ref(false);
     const detail = ref<string>();
     const form = ref<Teacher>({
@@ -112,13 +115,16 @@ export default defineComponent({
       e.$forceUpdate();
     };
     const query = (id: string) => {
-      dialogVisible.value = true;
+      //dialogVisible.value = true;
+      setTimeout(() => {
+        dialogVisible.value = true;
+      }, 300);
       tableData.value?.forEach((t) => {
+        //alert(t.id + " " + id);
         if (t.id == id) {
           detail.value = t.detail;
         }
       });
-      //alert(detail.value);
     };
     const del = (id: string) => {
       store.dispatch(DEL_TEACHER, id);
@@ -134,6 +140,8 @@ export default defineComponent({
       dialogVisible,
       detail,
       submitForm,
+      se,
+      del,
     };
   },
 });

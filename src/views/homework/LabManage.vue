@@ -16,6 +16,11 @@
             />
           </template>
         </el-table-column>
+        <el-table-column>
+          <template v-slot="scope">
+            <el-button type="danger" @click="del(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
     <div style="width: 500px">
@@ -46,29 +51,33 @@
     </div>
   </div>
 </template>
-
 <script lang="ts">
 import { State } from "@/store";
 import { Store, useStore } from "vuex";
-import { computed, defineComponent, Ref, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { Lab } from "@/datasource/Types";
-
+import { ADD_LAB, DEL_LAB } from "@/store/VuexTypes";
 export default defineComponent({
   setup() {
     const store: Store<State> = useStore();
     const tableData = computed(() => store.state.Labs);
+
     const form = ref<Lab>({
       id: "",
       number: 0,
       detail: "",
     });
-    const submitForm = (form: Ref) => {
-      console.log(form);
+    const submitForm = () => {
+      store.dispatch(ADD_LAB, form.value);
+    };
+    const del = (id: string) => {
+      store.dispatch(DEL_LAB, id);
     };
     return {
       tableData,
       form,
       submitForm,
+      del,
     };
   },
   methods: {

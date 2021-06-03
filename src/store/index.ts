@@ -14,31 +14,18 @@ export interface State {
 const myState: State = {
   agree: 0,
   user: {},
-  Labs: [
-    { id: "901", number: 100, detail: "" } as Lab,
-    { id: "902", number: 100, detail: "" } as Lab,
-    { id: "903", number: 100, detail: "" } as Lab,
-    { id: "904", number: 100, detail: "" } as Lab,
-  ],
+  Labs: [],
   courseMessage: [],
 
-  teachers: [
-    {
-      id: "1",
-      name: "bwhyman",
-      title: "讲师",
-      graduationSchool: "东北林业大学",
-      userName: "2046204600",
-      password: "123456",
-      detail: "软件工程专业教师",
-    },
-  ],
+  teachers: [],
 };
 const myMutations: MutationTree<State> = {
   [vxt.UPDATE_COURSES]: (state, data: CourseMessage[]) =>
     (state.courseMessage = data),
   [vxt.LOGIN]: (state, data: any) => (state.user = data),
   [vxt.UPDATE_TEACHER]: (state, data: any) => (state.teachers = data),
+  [vxt.UPDATE_LAB]: (state, data: Lab[]) => (state.Labs = data),
+  [vxt.GET_TEACHER]: (state, data: Teacher[]) => (state.teachers = data),
 };
 const myActions: ActionTree<State, State> = {
   [vxt.LOGIN]: async ({ commit }, data: any) => {
@@ -47,6 +34,7 @@ const myActions: ActionTree<State, State> = {
     if (resp.data.code == 401) {
       alert("用户名或密码错误");
     }
+    sessionStorage.setItem("token", resp.headers.token);
     console.log(resp);
     commit(vxt.LOGIN, resp.data.data);
     return Promise.resolve(resp.data.data.user);
@@ -59,14 +47,31 @@ const myActions: ActionTree<State, State> = {
     commit(vxt.UPDATE_COURSES, resp.data.data);
   },
   [vxt.DEL_TEACHER]: async ({ commit }, id: number) => {
-    const resp = await axios.delete<ResultVO>(`/api/teacher/del/${id}`);
-    commit(vxt.UPDATE_TEACHER, resp.data.data);
+    const resp = await axios.delete<ResultVO>(`/api/admin/delete/${id}`);
+    commit(vxt.UPDATE_TEACHER, resp.data.data.teachers);
   },
   [vxt.ADD_TEACHER]: async ({ commit }, teacher: Teacher) => {
-    console.log(teacher);
     const resp = await axios.post<ResultVO>("/api/admin/add", teacher);
+    commit(vxt.UPDATE_TEACHER, resp.data.data.teachers);
+  },
+  [vxt.ADD_LAB]: async ({ commit }, lab: Lab) => {
+    const resp = await axios.post<ResultVO>("/api/admin/insertLab", lab);
     console.log(resp);
-    commit(vxt.UPDATE_TEACHER, resp.data.data);
+    commit(vxt.UPDATE_LAB, resp.data.data.lab);
+  },
+  [vxt.GET_LAB]: async ({ commit }) => {
+    const resp = await axios.get<ResultVO>("/api/admin/allLab");
+    commit(vxt.UPDATE_LAB, resp.data.data.lab);
+  },
+  [vxt.DEL_LAB]: async ({ commit }, id: string) => {
+    console.log(id);
+    const resp = await axios.delete<ResultVO>(`/api/admin/deleteLab/${id}`);
+    console.log(resp);
+    commit(vxt.UPDATE_LAB, resp.data.data.lab);
+  },
+  [vxt.GET_TEACHER]: async ({ commit }) => {
+    const resp = await axios.get<ResultVO>("/api/admin/getUsers");
+    commit(vxt.GET_TEACHER, resp.data.data.teachers);
   },
 };
 export default createStore({
