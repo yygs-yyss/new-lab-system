@@ -1,7 +1,7 @@
 import { ActionTree, createStore, MutationTree } from "vuex";
 import { Lab, CourseMessage, Teacher, UserLogin } from "@/datasource/Types";
 import * as vxt from "@/store/VuexTypes";
-import axios from "axios";
+import axios from "@/axios";
 import { ResultVO } from "@/mock";
 
 export interface State {
@@ -27,6 +27,7 @@ const myMutations: MutationTree<State> = {
   [vxt.UPDATE_LAB]: (state, data: Lab[]) => (state.Labs = data),
   [vxt.GET_TEACHER]: (state, data: Teacher[]) => (state.teachers = data),
 };
+
 const myActions: ActionTree<State, State> = {
   [vxt.LOGIN]: async ({ commit }, data: any) => {
     console.log(data);

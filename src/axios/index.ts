@@ -9,7 +9,9 @@ axios.interceptors.request.use(
     // 判断,用于避免header包含authorization属性但数据值为空
     if (auth) {
       req.headers.token = auth;
+      console.log(req.headers.token);
     }
+    console.log("dddd");
     return req;
   },
   (error) => {

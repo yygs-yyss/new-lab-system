@@ -35,13 +35,46 @@
             <div class="word">
               {{ scope.row.name }}
             </div>
+
             <div class="word">{{ detail }}</div>
           </el-dialog>
         </template>
       </el-table-column>
       <el-table-column align="right">
         <template v-slot="scope">
-          <el-button @click="query(scope.row.id)">修改信息</el-button>
+          <el-button @click="update(scope.row.id)">修改信息</el-button>
+          <el-dialog title="教师信息" v-model="Visible" center>
+            <div class="table">
+              <el-form label-width="80px" style="margin: 0">
+                <el-form-item label="教师姓名">
+                  <el-input v-model="f.name"></el-input>
+                </el-form-item>
+                <el-form-item label="毕业院校">
+                  <el-input v-model="f.graduationSchool"></el-input>
+                </el-form-item>
+                <el-form-item label="职称">
+                  <el-input v-model="f.title"></el-input>
+                </el-form-item>
+                <el-form-item label="账号">
+                  <el-input v-model="f.userName"></el-input>
+                </el-form-item>
+                <el-form-item label="初始密码">
+                  <el-input v-model="f.password"></el-input>
+                </el-form-item>
+                <el-form-item label="教师简介">
+                  <el-input
+                    type="textarea"
+                    :rows="5"
+                    placeholder="请输入内容"
+                    v-model="f.detail"
+                  ></el-input>
+                </el-form-item>
+                <el-button id="button" type="primary" @click="submitForm(form)">
+                  添加教师
+                </el-button>
+              </el-form>
+            </div>
+          </el-dialog>
         </template>
       </el-table-column>
       <el-table-column align="right">
@@ -77,7 +110,7 @@
               v-model="form.detail"
             ></el-input>
           </el-form-item>
-          <el-button id="button" type="primary" @click="submitForm(form)">
+          <el-button id="button" type="primary" @click="submitForm('form')">
             添加教师
           </el-button>
         </el-form>
@@ -98,10 +131,11 @@ export default defineComponent({
     const store: Store<State> = useStore();
     const tableData = computed(() => store.state.teachers);
     const s = sessionStorage.getItem("token");
-    const agree = ref(false);
     const se = ref(s);
     const dialogVisible = ref(false);
     const detail = ref<string>();
+    const Visible = ref(false);
+    const f = ref<Teacher>({});
     const form = ref<Teacher>({
       id: "",
       name: "",
@@ -113,6 +147,12 @@ export default defineComponent({
     });
     const change = (e: { $forceUpdate: () => void }) => {
       e.$forceUpdate();
+    };
+    const update = (id: string) => {
+      store.state.teachers?.forEach((t) => {
+        if (t.id == id) f.value = t;
+      });
+      Visible.value = true;
     };
     const query = (id: string) => {
       //dialogVisible.value = true;
@@ -129,8 +169,9 @@ export default defineComponent({
     const del = (id: string) => {
       store.dispatch(DEL_TEACHER, id);
     };
-    const submitForm = () => {
-      store.dispatch(ADD_TEACHER, form.value);
+    const submitForm = (R: Ref<Teacher>) => {
+      alert(R.value);
+      store.dispatch(ADD_TEACHER, R.value);
     };
     return {
       tableData,
@@ -141,7 +182,10 @@ export default defineComponent({
       detail,
       submitForm,
       se,
+      update,
       del,
+      Visible,
+      f,
     };
   },
 });

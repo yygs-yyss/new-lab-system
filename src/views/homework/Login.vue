@@ -3,18 +3,13 @@
     <div align="center">
       <el-form label-width="100px" class="demo-ruleForm">
         <el-form-item label="用户名">
-          <el-input
-            type="text"
-            v-model="ruleForm.userName"
-            @input="change($event)"
-          ></el-input>
+          <el-input type="text" v-model="ruleForm.userName"></el-input>
         </el-form-item>
         <el-form-item label="密码">
           <el-input
             type="password"
             v-model="ruleForm.password"
             autocomplete="off"
-            @input="change($event)"
           ></el-input>
         </el-form-item>
         <el-form-item>
