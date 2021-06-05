@@ -3,6 +3,7 @@
     <h1 class="table">已开课程</h1>
     <div style="width: 1000px">
       <el-table class="table" :data="tableData" style="width: 100%">
+        <el-table-column label="课程编号" prop="id"></el-table-column>
         <el-table-column label="课程名称" prop="courseName"></el-table-column>
         <el-table-column label="开课周次" prop="start"></el-table-column>
         <el-table-column label="结课周次" prop="end"></el-table-column>
@@ -18,6 +19,13 @@
               size="mini"
               placeholder="输入关键字搜索"
             />
+          </template>
+        </el-table-column>
+        <el-table-column align="right">
+          <template v-slot="scope">
+            <el-button type="danger" @click="del(scope.row.id)">
+              删除课程
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -72,7 +80,7 @@
               </el-option>
             </el-select>
           </el-form-item>
-          <el-button id="button" type="primary" @click="submitForm(form)">
+          <el-button id="button" type="primary" @click="submitForm()">
             提交
           </el-button>
         </el-form>
@@ -86,6 +94,7 @@ import { State } from "@/store";
 import { Store, useStore } from "vuex";
 import { computed, defineComponent, ref } from "vue";
 import { CourseMessage, SelectMessage } from "@/datasource/Types";
+import { ADD_COURSE, DEL_COURSE } from "@/store/VuexTypes";
 
 export default defineComponent({
   setup() {
@@ -105,10 +114,18 @@ export default defineComponent({
       period: 0,
       studentNumber: 0,
     });
+    const submitForm = () => {
+      store.dispatch(ADD_COURSE, form.value);
+    };
+    const del = (id: string) => {
+      store.dispatch(DEL_COURSE, id);
+    }
     return {
       tableData,
       form,
       selectMessage,
+      submitForm,
+      del,
     };
   },
   methods: {

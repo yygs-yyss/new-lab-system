@@ -8,7 +8,7 @@
         </h2>
         <ul>
           <li>
-            <router-link to="/homework/courseM" class="i">
+            <router-link to="/homework/courseM" @click="query" class="i">
               <i class="el-icon-user-solid"></i>
               课程实验管理
             </router-link>
@@ -40,7 +40,7 @@ export default defineComponent({
     const store: Store<State> = useStore();
     const user = { userName: "BO", password: "123456" };
     const query = () => {
-      store.dispatch(GET_COURSES, user);
+      store.dispatch(GET_COURSES);
     };
     return {
       query,
@@ -61,7 +61,7 @@ export default defineComponent({
 #id {
   margin-top: 30px;
   width: 1px;
-  height: 750px;
+  height: 120%;
   background: darkgray;
 }
 .content-p-nav {

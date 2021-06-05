@@ -40,12 +40,10 @@ const myActions: ActionTree<State, State> = {
     commit(vxt.LOGIN, resp.data.data);
     return Promise.resolve(resp.data.data.user);
   },
-  [vxt.GET_COURSES]: async ({ commit }, name: string) => {
-    console.log(name);
-    const resp = await axios.get<ResultVO>("/api/teacher/get");
-    console.log(name);
+  [vxt.GET_COURSES]: async ({ commit }) => {
+    const resp = await axios.get<ResultVO>("/api/teacher/getCourse");
     console.log(resp);
-    commit(vxt.UPDATE_COURSES, resp.data.data);
+    commit(vxt.UPDATE_COURSES, resp.data.data.courses);
   },
   [vxt.DEL_TEACHER]: async ({ commit }, id: number) => {
     const resp = await axios.delete<ResultVO>(`/api/admin/delete/${id}`);
@@ -73,6 +71,27 @@ const myActions: ActionTree<State, State> = {
   [vxt.GET_TEACHER]: async ({ commit }) => {
     const resp = await axios.get<ResultVO>("/api/admin/getUsers");
     commit(vxt.GET_TEACHER, resp.data.data.teachers);
+  },
+  [vxt.UPDATE_TEACHER]: async ({ commit }) => {
+    const resp = await axios.get<ResultVO>("/api/admin/getUsers");
+    commit(vxt.GET_TEACHER, resp.data.data.teachers);
+  },
+  [vxt.MODIFY_TEACHER]: async ({ commit }) => {
+    const resp = await axios.patch<ResultVO>("/api/admin/Users");
+    commit(vxt.GET_TEACHER, resp.data.data.teachers);
+  },
+  [vxt.ADD_COURSE]: async ({ commit }, course: CourseMessage) => {
+    const resp = await axios.post<ResultVO>(
+      "/api/teacher/insertCourse",
+      course
+    );
+    commit(vxt.UPDATE_COURSES, resp.data.data.courses);
+  },
+  [vxt.DEL_COURSE]: async ({ commit }, id: string) => {
+    const resp = await axios.delete<ResultVO>(
+      `/api/teacher/deleteCourse/${id}`
+    );
+    commit(vxt.UPDATE_COURSES, resp.data.data.courses);
   },
 };
 export default createStore({

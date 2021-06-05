@@ -30,10 +30,10 @@
       <el-table-column label=" " prop=" "></el-table-column>
       <el-table-column align="right">
         <template v-slot="scope">
-          <el-button @click="query(scope.row.id)">查看详细</el-button>
+          <el-button @click="query(scope.row.id)" type="primary">查看详细</el-button>
           <el-dialog title="教师信息" v-model="dialogVisible" center>
-            <div class="word">
-              {{ scope.row.name }}
+            <div class="word" v-if="dialogVisible">
+              {{ msg }}
             </div>
 
             <div class="word">{{ detail }}</div>
@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column align="right">
         <template v-slot="scope">
-          <el-button @click="update(scope.row.id)">修改信息</el-button>
+          <el-button @click="update(scope.row.id)" type="warning">修改信息</el-button>
           <el-dialog title="教师信息" v-model="Visible" center>
             <div class="table">
               <el-form label-width="80px" style="margin: 0">
@@ -69,8 +69,8 @@
                     v-model="f.detail"
                   ></el-input>
                 </el-form-item>
-                <el-button id="button" type="primary" @click="submitForm(form)">
-                  添加教师
+                <el-button id="button" type="primary" @click="updateForm">
+                  修改信息
                 </el-button>
               </el-form>
             </div>
@@ -79,7 +79,9 @@
       </el-table-column>
       <el-table-column align="right">
         <template v-slot="scope">
-          <el-button @click="del(scope.row.id)">删除信息</el-button>
+          <el-button @click="del(scope.row.id)" type="danger">
+            删除信息
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -110,7 +112,7 @@
               v-model="form.detail"
             ></el-input>
           </el-form-item>
-          <el-button id="button" type="primary" @click="submitForm('form')">
+          <el-button id="button" type="primary" @click="submitForm()">
             添加教师
           </el-button>
         </el-form>
@@ -124,7 +126,7 @@ import { State } from "@/store";
 import { Store, useStore } from "vuex";
 import { computed, defineComponent, Ref, ref } from "vue";
 import { Teacher } from "@/datasource/Types";
-import { ADD_TEACHER, DEL_TEACHER } from "@/store/VuexTypes";
+import { ADD_TEACHER, DEL_TEACHER, MODIFY_TEACHER } from "@/store/VuexTypes";
 
 export default defineComponent({
   setup() {
@@ -136,6 +138,7 @@ export default defineComponent({
     const detail = ref<string>();
     const Visible = ref(false);
     const f = ref<Teacher>({});
+    const msg = ref<string>();
     const form = ref<Teacher>({
       id: "",
       name: "",
@@ -149,29 +152,36 @@ export default defineComponent({
       e.$forceUpdate();
     };
     const update = (id: string) => {
+      const te = ref<Teacher>({});
       store.state.teachers?.forEach((t) => {
-        if (t.id == id) f.value = t;
+        if (t.id == id) te.value = t;
       });
+      f.value = te.value;
       Visible.value = true;
     };
     const query = (id: string) => {
       //dialogVisible.value = true;
+      let flag = 0;
       setTimeout(() => {
         dialogVisible.value = true;
       }, 300);
       tableData.value?.forEach((t) => {
         //alert(t.id + " " + id);
-        if (t.id == id) {
+        if (t.id == id && flag == 0) {
           detail.value = t.detail;
+          msg.value = t.name;
+          flag = 1;
         }
       });
     };
     const del = (id: string) => {
       store.dispatch(DEL_TEACHER, id);
     };
-    const submitForm = (R: Ref<Teacher>) => {
-      alert(R.value);
-      store.dispatch(ADD_TEACHER, R.value);
+    const submitForm = () => {
+      store.dispatch(ADD_TEACHER, form.value);
+    };
+    const updateForm = () => {
+      store.dispatch(MODIFY_TEACHER, f.value);
     };
     return {
       tableData,
@@ -186,6 +196,8 @@ export default defineComponent({
       del,
       Visible,
       f,
+      updateForm,
+      msg,
     };
   },
 });
