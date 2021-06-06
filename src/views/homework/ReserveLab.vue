@@ -5,19 +5,33 @@
       实验教室：
       <el-select v-model="number" filterable placeholder="请选择">
         <el-option
-          v-for="(l, index) in classroomNumber"
+          v-for="(l, index) in id"
           :key="index"
-          :label="`丹青${l.id}`"
-          :value="l.id"
+          :label="`丹青${l}`"
+          :value="l"
         >
-          丹青{{ l.id }}
+          丹青{{ l }}
         </el-option>
       </el-select>
 
-      <el-button class="button" @click="query(classroom)">查询</el-button>
+      <el-button class="button" @click="query(number)">查询</el-button>
     </div>
 
     <div>
+      <div class="classroom">
+        实验课程：
+
+        <el-select v-model="selectMessage.name" filterable placeholder="请选择">
+          <el-option
+            v-for="(l, index) in course"
+            :key="index"
+            :label="l.courseName"
+            :value="l.courseName"
+          >
+            {{ l.courseName }}
+          </el-option>
+        </el-select>
+      </div>
       <div class="classroom">
         起始周次：
 
@@ -58,18 +72,18 @@
           filterable
           placeholder="请选择"
         >
-          <el-option
-            v-for="(l, index) in 7"
-            :key="index"
-            :label="`丹青${l.id}`"
-            :value="`l.id`"
-          >
-            丹青{{ l.id }}
-          </el-option>
+          <template v-for="(l, index) of 7" :key="index">
+            <el-option
+              v-for="(r, index) in 5"
+              :key="index"
+              :label="`周${l}第${r}节课`"
+              :value="`0${l}0${r}`"
+            >
+              周{{ l }}第{{ r }}节课
+            </el-option>
+          </template>
         </el-select>
-        <el-button class="button" @click="select(selectMessage)">
-          选课
-        </el-button>
+        <el-button class="button" @click="select">选课</el-button>
       </div>
     </div>
     <table border="none">
@@ -150,18 +164,25 @@ import { Store, useStore } from "vuex";
 import { computed, defineComponent, Ref, ref } from "vue";
 import axios from "axios";
 import { ClassroomMessage, SelectMessage } from "@/datasource/Types";
+import { useRoute } from "vue-router";
+import { ADD_COURSEMESSAGE, GET_LABMESSAGE } from "@/store/VuexTypes";
 
 export default defineComponent({
   setup() {
     const store: Store<State> = useStore();
     const classroomNumber = computed(() => store.state.Labs);
     const number = ref<string>();
+    const course = computed(() => store.state.courseMessage);
+    const u = store.state.name;
+    const id = computed(() => store.state.id);
     const selectMessage = ref<SelectMessage>({
       id: "",
+      name: "",
       start: 1,
       end: 1,
       lesson: "",
     });
+    selectMessage.value.name = u;
     const classroomMessage = ref<ClassroomMessage[]>([
       {
         id: "901",
@@ -172,17 +193,11 @@ export default defineComponent({
         courseName: "数据结构",
       },
     ]);
-
-    const query = (number: string) => {
-      const url = `http://localhost:8080/api/lab/${number}`;
-      axios.get(url).then((resp) => {
-        classroomMessage.value = resp.data;
-      });
+    const query = (number: number) => {
+      store.dispatch(GET_LABMESSAGE, number);
     };
-    const select = (selectMessage: Ref<SelectMessage>) => {
-      axios.get("http://localhost:8080/api/${Lab}").then((resp) => {
-        classroomMessage.value = resp.data;
-      });
+    const select = () => {
+      store.dispatch(ADD_COURSEMESSAGE, selectMessage.value);
     };
     return {
       classroomNumber,
@@ -191,6 +206,8 @@ export default defineComponent({
       classroomMessage,
       selectMessage,
       select,
+      course,
+      id,
     };
   },
 });

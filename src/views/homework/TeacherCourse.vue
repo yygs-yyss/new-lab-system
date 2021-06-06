@@ -9,9 +9,19 @@
       <template #header>
         <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
       </template>
-      <router-link to="/homework/ReserveLab">
-        <el-button>实验选课</el-button>
-      </router-link>
+      <template v-slot="scope">
+        <router-link to="/homework/ReserveLab">
+          <el-button
+            @click="
+              select(scope.row.courseName);
+              query;
+              query1(scope.row.studentNumber);
+            "
+          >
+            实验选课
+          </el-button>
+        </router-link>
+      </template>
     </el-table-column>
   </el-table>
 </template>
@@ -20,13 +30,26 @@
 import { State } from "@/store";
 import { Store, useStore } from "vuex";
 import { computed, defineComponent } from "vue";
+import { GET_LAB, GET_LABBYNUMBER } from "@/store/VuexTypes";
 
 export default defineComponent({
   setup() {
     const store: Store<State> = useStore();
     const tableData = computed(() => store.state.courseMessage);
+    const select = (name: string) => {
+      store.state.name = name;
+    };
+    const query = () => {
+      store.dispatch(GET_LAB);
+    };
+    const query1 = (number: number) => {
+      store.dispatch(GET_LABBYNUMBER, number);
+    };
     return {
       tableData,
+      select,
+      query,
+      query1,
     };
   },
 });

@@ -1,8 +1,10 @@
 export interface Lab {
+  //实验室信息
   id: string;
   number: number;
   detail: string;
 }
+// 
 export interface ClassroomMessage {
   id?: string;
   lesson?: string;
@@ -24,6 +26,7 @@ export interface CourseMessage {
 }
 export interface SelectMessage {
   id?: string;
+  name?: string;
   start?: number;
   end?: number;
   lesson?: string;

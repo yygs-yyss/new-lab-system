@@ -31,7 +31,7 @@
 </template>
 <script lang="ts">
 import { State } from "@/store";
-import { GET_COURSES } from "@/store/VuexTypes";
+import { GET_COURSES, GET_LAB } from "@/store/VuexTypes";
 import { Store, useStore } from "vuex";
 import { defineComponent } from "vue";
 

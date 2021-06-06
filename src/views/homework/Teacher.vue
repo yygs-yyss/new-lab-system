@@ -30,7 +30,9 @@
       <el-table-column label=" " prop=" "></el-table-column>
       <el-table-column align="right">
         <template v-slot="scope">
-          <el-button @click="query(scope.row.id)" type="primary">查看详细</el-button>
+          <el-button @click="query(scope.row.id)" type="primary">
+            查看详细
+          </el-button>
           <el-dialog title="教师信息" v-model="dialogVisible" center>
             <div class="word" v-if="dialogVisible">
               {{ msg }}
@@ -42,7 +44,9 @@
       </el-table-column>
       <el-table-column align="right">
         <template v-slot="scope">
-          <el-button @click="update(scope.row.id)" type="warning">修改信息</el-button>
+          <el-button @click="update(scope.row.id)" type="warning">
+            修改信息
+          </el-button>
           <el-dialog title="教师信息" v-model="Visible" center>
             <div class="table">
               <el-form label-width="80px" style="margin: 0">
