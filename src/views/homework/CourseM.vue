@@ -100,12 +100,7 @@ export default defineComponent({
   setup() {
     const store: Store<State> = useStore();
     const tableData = computed(() => store.state.courseMessage);
-    const selectMessage = ref<SelectMessage>({
-      id: "",
-      start: 1,
-      end: 1,
-      lesson: "",
-    });
+    const selectMessage = ref<SelectMessage>({});
     const form = ref<CourseMessage>({
       courseName: "",
       teacherName: "",

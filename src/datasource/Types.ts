@@ -4,7 +4,7 @@ export interface Lab {
   number: number;
   detail: string;
 }
-// 
+//
 export interface ClassroomMessage {
   id?: string;
   lesson?: string;
@@ -25,8 +25,8 @@ export interface CourseMessage {
   studentNumber: number;
 }
 export interface SelectMessage {
-  id?: string;
-  name?: string;
+  labId?: string;
+  courseName?: string;
   start?: number;
   end?: number;
   lesson?: string;

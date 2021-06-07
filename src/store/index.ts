@@ -144,10 +144,12 @@ const myActions: ActionTree<State, State> = {
   },
   //添加预约信息
   [vxt.ADD_COURSEMESSAGE]: async ({ commit }, message: SelectMessage) => {
+    console.log(1);
     const resp = await axios.post<ResultVO>(
       `/api/classMessage/insert`,
       message
     );
+    console.log(1);
     console.log(resp);
     commit(vxt.UPDATE_LABMESSAGE, resp.data.data.message);
   },

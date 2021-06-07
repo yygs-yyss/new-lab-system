@@ -12,7 +12,6 @@
               v-model="search"
               size="mini"
               placeholder="输入关键字搜索"
-              @input="change($event)"
             />
           </template>
         </el-table-column>

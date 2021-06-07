@@ -21,7 +21,11 @@
       <div class="classroom">
         实验课程：
 
-        <el-select v-model="selectMessage.name" filterable placeholder="请选择">
+        <el-select
+          v-model="selectMessage.courseName"
+          filterable
+          placeholder="请选择"
+        >
           <el-option
             v-for="(l, index) in course"
             :key="index"
@@ -86,76 +90,79 @@
         <el-button class="button" @click="select">选课</el-button>
       </div>
     </div>
-    <table border="none">
-      <tr>
-        <th></th>
-        <th>星期一</th>
-        <th>星期二</th>
-        <th>星期三</th>
-        <th>星期四</th>
-        <th>星期五</th>
-        <th>星期六</th>
-        <th>星期天</th>
-      </tr>
-      <tr>
-        <td>第一节课</td>
-        <td>
-          <template v-for="(n, index) of classroomMessage" :key="index">
-            <template v-if="n.lesson == '0101'">
-              {{ n.courseName }}{{ n.start }}周-{{ n.end }}周{{
-                n.teacherName
-              }}&nbsq&nbsq{{ n.title }}
+    <div class="table">
+      <table border="10px solid black">
+        <tr>
+          <th></th>
+          <th>星期一</th>
+          <th>星期二</th>
+          <th>星期三</th>
+          <th>星期四</th>
+          <th>星期五</th>
+          <th>星期六</th>
+          <th>星期天</th>
+        </tr>
+        <tr>
+          <td>第一节课</td>
+          <td>
+            <template v-for="(n, index) of classroomMessage" :key="index">
+              <template v-if="n.lesson == '0101'">
+                {{ n.courseName }}--{{ n.start }}周-{{ n.end }}周--{{
+                  n.teacherName
+                }}{{ n.title }}
+              </template>
+              <br />
             </template>
-          </template>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>第二节课</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>第三节课</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>第四节课</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>第五节课</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>第二节课</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>第三节课</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>第四节课</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>第五节课</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -175,24 +182,12 @@ export default defineComponent({
     const course = computed(() => store.state.courseMessage);
     const u = store.state.name;
     const id = computed(() => store.state.id);
-    const selectMessage = ref<SelectMessage>({
-      id: "",
-      name: "",
-      start: 1,
-      end: 1,
-      lesson: "",
-    });
-    selectMessage.value.name = u;
-    const classroomMessage = ref<ClassroomMessage[]>([
-      {
-        id: "901",
-        start: 1,
-        end: 9,
-        teacherName: "y",
-        lesson: "0101",
-        courseName: "数据结构",
-      },
-    ]);
+    const selectMessage = ref<SelectMessage>({});
+    selectMessage.value.courseName = u;
+    selectMessage.value.labId = computed(
+      () => number.value
+    ) as unknown as string;
+    const classroomMessage = computed(() => store.state.classroomMessage);
     const query = (number: number) => {
       store.dispatch(GET_LABMESSAGE, number);
     };
@@ -222,5 +217,8 @@ export default defineComponent({
 }
 .button {
   margin: 0 10px;
+}
+.table {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 </style>
