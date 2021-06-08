@@ -14,11 +14,7 @@
             </router-link>
           </li>
           <li>
-            <router-link
-              to="/homework/teacherCourse"
-              class="i"
-              @click="query()"
-            >
+            <router-link to="/homework/teacherCourse" class="i" @click="query">
               <i class="el-icon-circle-plus"></i>
               实验室预约
             </router-link>
@@ -31,7 +27,7 @@
 </template>
 <script lang="ts">
 import { State } from "@/store";
-import { GET_COURSES, GET_LAB } from "@/store/VuexTypes";
+import { GET_COURSES, GET_LABCOURSES } from "@/store/VuexTypes";
 import { Store, useStore } from "vuex";
 import { defineComponent } from "vue";
 
@@ -41,6 +37,7 @@ export default defineComponent({
     const user = { userName: "BO", password: "123456" };
     const query = () => {
       store.dispatch(GET_COURSES);
+      store.dispatch(GET_LABCOURSES);
     };
     return {
       query,

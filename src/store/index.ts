@@ -81,7 +81,9 @@ const myActions: ActionTree<State, State> = {
   },
   // 修改老师信息
   [vxt.MODIFY_TEACHER]: async ({ commit }, teacher: Teacher) => {
-    const resp = await axios.patch<ResultVO>("/api/admin/Users", teacher);
+    console.log(1);
+    const resp = await axios.patch<ResultVO>("/api/admin/updateUser", teacher);
+    console.log(resp);
     commit(vxt.GET_TEACHER, resp.data.data.teachers);
   },
   //基于教师id删除某一教师用户
@@ -113,7 +115,6 @@ const myActions: ActionTree<State, State> = {
   //基于请求中的教师自带的uid 获取教授课程信息
   [vxt.GET_COURSES]: async ({ commit }) => {
     const resp = await axios.get<ResultVO>("/api/teacher/getCourse");
-    console.log(resp);
     commit(vxt.UPDATE_COURSES, resp.data.data.courses);
   },
   //添加课程
@@ -142,12 +143,30 @@ const myActions: ActionTree<State, State> = {
     console.log(resp);
     commit(vxt.UPDATE_LABMESSAGE, resp.data.data.message);
   },
+  //查询预约信息
+  [vxt.GET_LABCOURSES]: async ({ commit }) => {
+    console.log(1);
+    const resp = await axios.get<ResultVO>(`/api/teacher/getMyMessage`);
+    console.log(1);
+    console.log(resp);
+    commit(vxt.UPDATE_LABMESSAGE, resp.data.data.message);
+  },
   //添加预约信息
   [vxt.ADD_COURSEMESSAGE]: async ({ commit }, message: SelectMessage) => {
     console.log(1);
     const resp = await axios.post<ResultVO>(
       `/api/classMessage/insert`,
       message
+    );
+    console.log(1);
+    console.log(resp);
+    commit(vxt.UPDATE_LABMESSAGE, resp.data.data.message);
+  },
+  //取消预约信息
+  [vxt.DEL_LABCOURSE]: async ({ commit }, id: string) => {
+    console.log(id);
+    const resp = await axios.delete<ResultVO>(
+      `/api/teacher/deleteMessage/${id}`
     );
     console.log(1);
     console.log(resp);
