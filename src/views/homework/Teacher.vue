@@ -179,13 +179,20 @@ export default defineComponent({
       });
     };
     const del = (id: string) => {
-      store.dispatch(DEL_TEACHER, id);
+      const firm = confirm("此操作将永久删除该信息, 是否继续?");
+      if (firm == true) {
+        store.dispatch(DEL_TEACHER, id);
+      }
     };
     const submitForm = () => {
       store.dispatch(ADD_TEACHER, form.value);
     };
     const updateForm = () => {
-      store.dispatch(MODIFY_TEACHER, f.value);
+      const firm = confirm("此操作将永久修改该信息, 是否继续?");
+      if (firm == true) {
+        store.dispatch(MODIFY_TEACHER, f.value);
+        Visible.value = false;
+      }
     };
     return {
       tableData,

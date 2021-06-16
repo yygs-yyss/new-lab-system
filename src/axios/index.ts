@@ -2,6 +2,7 @@ import { ResultVO } from "@/mock";
 import axios from "axios";
 import store from "@/store";
 import { UPDATE_EXCEPTION } from "@/store/VuexTypes";
+import { ElMessage } from "element-plus";
 
 axios.interceptors.request.use(
   (req) => {
@@ -11,7 +12,6 @@ axios.interceptors.request.use(
       req.headers.token = auth;
       console.log(req.headers.token);
     }
-    console.log("dddd");
     return req;
   },
   (error) => {
@@ -26,7 +26,10 @@ axios.interceptors.response.use(
     // 全局处理后端返回的异常信息。即，业务状态码不是200
     if (data.code != 200) {
       store.commit(UPDATE_EXCEPTION, data.message);
+      ElMessage.error(data.message);
       return Promise.reject();
+    } else {
+      ElMessage.success("操作成功");
     }
     return resp;
   },

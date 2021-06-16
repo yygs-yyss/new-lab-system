@@ -70,13 +70,17 @@ export default defineComponent({
       store.dispatch(ADD_LAB, form.value);
     };
     const del = (id: string) => {
-      store.dispatch(DEL_LAB, id);
+      const firm = confirm("此操作将永久删除该信息, 是否继续?");
+      if (firm == true) {
+        store.dispatch(DEL_LAB, id);
+      }
     };
     return {
       tableData,
       form,
       submitForm,
       del,
+      open,
     };
   },
   methods: {

@@ -8,13 +8,13 @@
         </h2>
         <ul>
           <li>
-            <router-link to="/homework/courseM" @click="query" class="i">
+            <router-link to="/homework/courseM" @click="query1" class="i">
               <i class="el-icon-user-solid"></i>
               课程实验管理
             </router-link>
           </li>
           <li>
-            <router-link to="/homework/teacherCourse" class="i" @click="query">
+            <router-link to="/homework/teacherCourse" class="i" @click="query2">
               <i class="el-icon-circle-plus"></i>
               实验室预约
             </router-link>
@@ -34,13 +34,15 @@ import { defineComponent } from "vue";
 export default defineComponent({
   setup() {
     const store: Store<State> = useStore();
-    const user = { userName: "BO", password: "123456" };
-    const query = () => {
+    const query1 = () => {
       store.dispatch(GET_COURSES);
+    };
+    const query2 = () => {
       store.dispatch(GET_LABCOURSES);
     };
     return {
-      query,
+      query1,
+      query2,
     };
   },
 });

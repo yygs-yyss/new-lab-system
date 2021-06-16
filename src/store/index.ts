@@ -11,8 +11,10 @@ import {
 import * as vxt from "@/store/VuexTypes";
 import axios from "@/axios";
 import { ResultVO } from "@/mock";
+import { ElMessage } from "element-plus";
 
 export interface State {
+  data: any;
   agree: number; //登录不同页面后的渲染
   user: UserLogin; //新创建的用户
   Labs?: Lab[]; //实验室信息
@@ -23,6 +25,7 @@ export interface State {
   id: number[]; //基于人数搜索教室返回的教室号
 }
 const myState: State = {
+  data: {},
   agree: 0,
   user: {},
   Labs: [],
@@ -33,6 +36,7 @@ const myState: State = {
   id: [],
 };
 const myMutations: MutationTree<State> = {
+  [vxt.UPDATE_EXCEPTION]: (state, data: any) => (state.data = data),
   [vxt.UPDATE_COURSES]: (state, data: CourseMessage[]) =>
     (state.courseMessage = data),
   [vxt.LOGIN]: (state, data: User) => (state.user = data),
@@ -45,16 +49,15 @@ const myMutations: MutationTree<State> = {
   [vxt.UPDATE_CLASSMESSAGE]: (state, data: ClassroomMessage[]) =>
     (state.classroomMessage = data),
 };
-
 //<------------------------------------------------------------------------------------------------------------------>
-
 const myActions: ActionTree<State, State> = {
   //用户登录请求，登录成功跳转对应页面，失败则弹出错误提示
   [vxt.LOGIN]: async ({ commit }, data: User) => {
     console.log(data);
     const resp = await axios.post<ResultVO>("/api/login", data);
-    if (resp.data.code == 401) {
-      alert("用户名或密码错误");
+    if (resp.data.code != 200) {
+      alert(1);
+      ElMessage.error("用户名或密码错误");
     }
     sessionStorage.setItem("token", resp.headers.token);
     console.log(resp);
@@ -88,6 +91,7 @@ const myActions: ActionTree<State, State> = {
   },
   //基于教师id删除某一教师用户
   [vxt.DEL_TEACHER]: async ({ commit }, id: number) => {
+    console.log(id);
     const resp = await axios.delete<ResultVO>(`/api/admin/delete/${id}`);
     commit(vxt.UPDATE_TEACHER, resp.data.data.teachers);
   },
@@ -107,6 +111,14 @@ const myActions: ActionTree<State, State> = {
     console.log(id);
     const resp = await axios.delete<ResultVO>(`/api/admin/deleteLab/${id}`);
     console.log(resp);
+    if (resp.data.code == 200) {
+      ElMessage.success({
+        message: "删除成功",
+        type: "success",
+      });
+    } else {
+      ElMessage.error("删除失败");
+    }
     commit(vxt.UPDATE_LAB, resp.data.data.lab);
   },
 

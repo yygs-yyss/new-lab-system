@@ -113,8 +113,11 @@ export default defineComponent({
       store.dispatch(ADD_COURSE, form.value);
     };
     const del = (id: string) => {
-      store.dispatch(DEL_COURSE, id);
-    }
+      const firm = confirm("此操作将永久删除该信息, 是否继续?");
+      if (firm == true) {
+        store.dispatch(DEL_COURSE, id);
+      }
+    };
     return {
       tableData,
       form,

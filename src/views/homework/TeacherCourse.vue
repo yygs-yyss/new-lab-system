@@ -66,7 +66,10 @@ export default defineComponent({
       store.dispatch(GET_LABBYNUMBER, number);
     };
     const del = (id: string) => {
-      store.dispatch(DEL_LABCOURSE, id);
+      const firm = confirm("是否确认取消预约?");
+      if (firm == true) {
+        store.dispatch(DEL_LABCOURSE, id);
+      }
     };
     return {
       tableData,

@@ -8,13 +8,13 @@
         </h2>
         <ul>
           <li>
-            <router-link to="/homework/LabM" @click="query()" class="i">
+            <router-link to="/homework/LabM" @click="query1()" class="i">
               <i class="el-icon-user-solid"></i>
               实验室管理
             </router-link>
           </li>
           <li>
-            <router-link to="/homework/teacher" @click="query()" class="i">
+            <router-link to="/homework/teacher" @click="query2()" class="i">
               <i class="el-icon-circle-plus"></i>
               教师管理
             </router-link>
@@ -34,13 +34,16 @@ import { GET_LAB, GET_TEACHER, UPDATE_LAB } from "@/store/VuexTypes";
 export default defineComponent({
   setup() {
     const store: Store<State> = useStore();
-    const query = () => {
+    const query1 = () => {
       store.dispatch(GET_LAB);
+    };
+    const query2 = () => {
       store.dispatch(GET_TEACHER);
     };
     return {
-      query,
-    }
+      query1,
+      query2,
+    };
   },
 });
 </script>

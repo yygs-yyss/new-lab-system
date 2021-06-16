@@ -16,7 +16,6 @@
           <el-button style="width: 100%" type="primary" @click="submitForm()">
             登录
           </el-button>
-          {{ ruleForm.userName }}/{{ ruleForm.password }}
         </el-form-item>
       </el-form>
     </div>
@@ -61,8 +60,8 @@ export default defineComponent({
   background: url("../../image/background.jpg");
   display: flex;
   background-size: cover;
-  width: 1920px;
-  height: 700px;
+  width: 1525px;
+  height: 705px;
   background-attachment: fixed;
 }
 .demo-ruleForm {
