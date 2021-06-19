@@ -60,7 +60,7 @@ export default defineComponent({
 #id {
   margin-top: 30px;
   width: 1px;
-  height: 750px;
+  height: 100%;
   background: darkgray;
 }
 .content-p-nav {

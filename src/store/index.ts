@@ -19,10 +19,11 @@ export interface State {
   user: UserLogin; //新创建的用户
   Labs?: Lab[]; //实验室信息
   courseMessage: CourseMessage[]; //课程信息
-  classroomMessage: ClassroomMessage[]; //预约教室信息
+  classroomMessage: ClassroomMessage[]; //基于实验室号预约实验室信息
   teachers?: Teacher[]; //老师信息
   name: string; //实验选课选中后的课程，将设为预约里的默认课程
   id: number[]; //基于人数搜索教室返回的教室号
+  reserveMessage: ClassroomMessage[]; //预约实验室信息
 }
 const myState: State = {
   data: {},
@@ -34,6 +35,7 @@ const myState: State = {
   name: "",
   teachers: [],
   id: [],
+  reserveMessage: [],
 };
 const myMutations: MutationTree<State> = {
   [vxt.UPDATE_EXCEPTION]: (state, data: any) => (state.data = data),
@@ -44,10 +46,13 @@ const myMutations: MutationTree<State> = {
   [vxt.UPDATE_LAB]: (state, data: Lab[]) => (state.Labs = data),
   [vxt.GET_TEACHER]: (state, data: Teacher[]) => (state.teachers = data),
   [vxt.UPDATE_ID]: (state, data: number[]) => (state.id = data),
-  [vxt.UPDATE_LABMESSAGE]: (state, data: CourseMessage[]) =>
-    (state.classroomMessage = data),
+  [vxt.UPDATE_LABMESSAGE]: (state, data: CourseMessage[]) => (
+    data.sort((a, b) => a.start - b.start), (state.classroomMessage = data)
+  ),
   [vxt.UPDATE_CLASSMESSAGE]: (state, data: ClassroomMessage[]) =>
     (state.classroomMessage = data),
+  [vxt.UPDATE_RESERVEMESSAGE]: (state, data: any) =>
+    (state.reserveMessage = data),
 };
 //<------------------------------------------------------------------------------------------------------------------>
 const myActions: ActionTree<State, State> = {
@@ -111,14 +116,6 @@ const myActions: ActionTree<State, State> = {
     console.log(id);
     const resp = await axios.delete<ResultVO>(`/api/admin/deleteLab/${id}`);
     console.log(resp);
-    if (resp.data.code == 200) {
-      ElMessage.success({
-        message: "删除成功",
-        type: "success",
-      });
-    } else {
-      ElMessage.error("删除失败");
-    }
     commit(vxt.UPDATE_LAB, resp.data.data.lab);
   },
 
@@ -158,10 +155,10 @@ const myActions: ActionTree<State, State> = {
   //查询预约信息
   [vxt.GET_LABCOURSES]: async ({ commit }) => {
     console.log(1);
-    const resp = await axios.get<ResultVO>(`/api/teacher/getMyMessage`);
+    const resp = await axios.get<ResultVO>("api/teacher/getMyMessage");
     console.log(1);
     console.log(resp);
-    commit(vxt.UPDATE_LABMESSAGE, resp.data.data.message);
+    commit(vxt.UPDATE_RESERVEMESSAGE, resp.data.data.message);
   },
   //添加预约信息
   [vxt.ADD_COURSEMESSAGE]: async ({ commit }, message: SelectMessage) => {

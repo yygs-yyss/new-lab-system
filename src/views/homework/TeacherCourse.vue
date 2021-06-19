@@ -55,7 +55,7 @@ export default defineComponent({
   setup() {
     const store: Store<State> = useStore();
     const tableData = computed(() => store.state.courseMessage);
-    const data = computed(() => store.state.classroomMessage);
+    const data = computed(() => store.state.reserveMessage);
     const select = (name: string) => {
       store.state.name = name;
     };
