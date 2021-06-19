@@ -1,24 +1,11 @@
-# vue3-design-xx
-
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 项目名称：实验室预约系统
+项目简介：
+系统分为两个角色
+实验室管理员
+实验室管理，添加实验室，实验室编号，机器数量，描述(机器配置等)
+教师管理，教师信息的CURD
+教师
+课程实验管理，添加课程名称，学生数量，学时数
+实验室预约
+项目说明：
+前端：主要基于TypeScript与vue 3.0.5框架实现，使用element-plus框架提供友好美化的互交操作。使用vuex管理全局数据状态，引入axios-mock-adapter模拟后端数据，通过axios拦截器实现请求全局异常处理。token保存在SessionStorage防止页面刷新登录数据丢失，基于后端返回的角色权限动态生成路由信息。
